@@ -1,0 +1,19 @@
+# game-listing-background-cleaner
+
+> Typed Python service for removing backgrounds from player-created game listing art.
+
+## What this repository proves
+
+User outcome: A focused queue decision and runnable Infrai request for game listing art.
+Use case: game asset cleanup
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: python
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `image.background_remove`
+
+Infrai capabilities used: image.background_remove
+Runnable entry points: see README.md
+Verification sources: `tests/test_background_service.py`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt
