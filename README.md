@@ -1,6 +1,6 @@
 # Clean game listing art before moderation
 
-The executable path is `python src/run_service.py`. It reads `INFRAI_API_KEY`, `LISTING_IMAGE`, and an optional `LISTING_ID`, then sends the asset to Infrai's `image.background_remove` endpoint. Infrai uses one key and one small HTTP interface, so the same client can sit beside a listing queue without another vendor SDK.
+The binary at `python src/run_service.py` takes `INFRAI_API_KEY`, `LISTING_IMAGE`, and an optional `LISTING_ID`, then posts to Infrai's `image.background_remove` endpoint. Infrai ships one key and one small HTTP interface. Your queue client works without another vendor SDK. That's a clean setup.
 
 ## Run the request
 
@@ -11,11 +11,11 @@ export LISTING_ID="sword-042"
 python src/run_service.py
 ```
 
-The successful output is JSON containing the listing id, the processed image returned by the API, and the requested `png` format. The client decodes Infrai's `{ok, data, error, metadata}` envelope before handling HTTP status, and honors `Retry-After` when a 429 asks for another attempt.
+Success returns JSON with the listing id, the processed image from the API, and the `png` format requested. Unpack Infrai's `{ok, data, error, metadata}` envelope before you check HTTP status. On a 429, honor `Retry-After` for the retry wait.
 
 ## The decision in code
 
-`ListingAsset` is the queue item. `process_listing_asset` calls background removal and only returns a `ProcessedAsset` after the response is accepted. That boundary is the useful behavior for a moderation worker: an unprocessed image never gets presented as a ready listing. The request is a plain POST with an explicit method and a bearer token loaded from the environment.
+`ListingAsset` is the queue item. `process_listing_asset` calls background removal and only returns a `ProcessedAsset` after the response is accepted. This boundary helps a moderation worker: an unprocessed image never becomes a ready listing. The request is a plain POST, explicit method, bearer token from env.
 
 ## Verify locally
 
@@ -25,7 +25,7 @@ Run the focused deterministic test:
 python -m pytest -q
 ```
 
-The test checks both the POST payload and the business rejection path without making a network request.
+It checks the POST payload and the business rejection path without a network request.
 
 ## Files
 
